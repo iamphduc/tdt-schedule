@@ -1,13 +1,13 @@
-const cheerio = require('cheerio');
-const puppeteer = require('puppeteer-core');
+// const cheerio = require('cheerio');
+// const puppeteer = require('puppeteer-core');
 
 //const bodyParser = require('body-parser');
 
 const express = require('express');
 const app = express();
-const port = process.env.port || 3000;
+const port = process.env.port || 3002;
 
-const verifyWebhook = require('./verify-webhook');
+// const verifyWebhook = require('./verify-webhook');
 
 // app.use(bodyParser.json());
 // app.use(bodyParser.urlencoded({ extended: true }));
@@ -18,6 +18,10 @@ const url = 'https://stdportal.tdtu.edu.vn/Login/';
 app.get('/', (req, res) => {
     res.send('hello');
 });
+
+app.listen(port, () => {
+    console.log(`App: http://localhost:${port}`);
+})
 
 // app.get('/test', async(req, res) => {
 //     const browser = await puppeteer.launch({
@@ -143,9 +147,7 @@ app.get('/', (req, res) => {
 //     res.send(subjectList);
 // })
 
-app.listen(port, () => {
-    console.log(`App: http://localhost:${port}`);
-})
+
 
 /*
 (async () => {
