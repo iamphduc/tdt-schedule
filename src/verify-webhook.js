@@ -6,10 +6,6 @@ const verifyWebhook = (req, res) => {
     let token = req.query['hub.verify_token'];
     let challenge = req.query['hub.challenge'];
 
-    console.log('hello');
-
-    return res.send('hello');
-
     if (mode && token === VERIFY_TOKEN) {
         return res.status(200).send(challenge);
     }
