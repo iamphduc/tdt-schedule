@@ -1,7 +1,7 @@
 const cheerio = require('cheerio');
 const puppeteer = require('puppeteer-core');
 
-const bodyParser = require('body-parser');
+//const bodyParser = require('body-parser');
 
 const express = require('express');
 const app = express();
@@ -9,15 +9,17 @@ const port = process.env.port || 3000;
 
 const verifyWebhook = require('./verify-webhook');
 
-app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: true }));
+// app.use(bodyParser.json());
+// app.use(bodyParser.urlencoded({ extended: true }));
 
 
 const url = 'https://stdportal.tdtu.edu.vn/Login/';
 
-app.get('/', verifyWebhook);
+app.get('/', (req, res) => {
+    res.send('hello');
+});
 
-app.get('/', async(req, res) => {
+app.get('/test', async(req, res) => {
     const browser = await puppeteer.launch({
         executablePath: 'C:\\Program Files (x86)\\Google\\Chrome\\Application\\chrome.exe',
         defaultViewport: {width: 1920, height: 1080},
