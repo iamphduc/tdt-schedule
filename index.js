@@ -7,7 +7,7 @@ const express = require('express');
 const app = express();
 const port = process.env.port || 3000;
 
-const verifyWebhook = require('./verify-webhook');
+const verifyWebhook = require('./src/verify-webhook');
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
@@ -16,8 +16,6 @@ app.use(bodyParser.urlencoded({ extended: true }));
 const url = 'https://stdportal.tdtu.edu.vn/Login/';
 
 app.get('/', verifyWebhook);
-
-
 
 app.get('/', async(req, res) => {
     const browser = await puppeteer.launch({
