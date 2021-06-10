@@ -14,11 +14,14 @@ app.use(bodyParser.urlencoded({ extended: true }));
 
 const url = 'https://stdportal.tdtu.edu.vn/Login/';
 
-app.get('/', (req, res) => {
-    res.send('hello');
-});
+app.get('/', async function(req, res) {
+    const MSSV = req.query.mssv;
+    const PASSWORD = req.query.pass;
 
-app.get('/test', async function(req, res) {
+    if (!MSSV || !PASSWORD) {
+        return res.send('https://tdt-schedule.herokuapp.com?mssv=...&pass=...');
+    }
+
     let html = '';
 
     try {
@@ -47,8 +50,8 @@ app.get('/test', async function(req, res) {
         // login
         console.time('Login page');
 
-        await page.type('#txtUser', '51900790');
-        await page.type('#txtPass', '51900790');
+        await page.type('#txtUser', MSSV);
+        await page.type('#txtPass', PASSWORD);
 
         await Promise.all([
             page.waitForNavigation(),
