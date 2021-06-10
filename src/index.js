@@ -24,9 +24,9 @@ app.get('/test', async function(req, res) {
         //defaultViewport: {width: 1920, height: 1080},
         args: [
             '--no-sandbox',
-            '--disable-setuid-sandbox',
-            '--disable-dev-shm-usage',
-            '--single-process'
+            // '--disable-setuid-sandbox',
+            // '--disable-dev-shm-usage',
+            // '--single-process'
         ],
         headless: true,
     });
