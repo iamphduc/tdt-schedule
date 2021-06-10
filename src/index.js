@@ -21,14 +21,14 @@ app.get('/', (req, res) => {
 app.get('/test', async function(req, res) {
     const browser = await puppeteer.launch({
         //executablePath: 'C:\\Program Files (x86)\\Google\\Chrome\\Application\\chrome.exe',
-        defaultViewport: {width: 1920, height: 1080},
+        //defaultViewport: {width: 1920, height: 1080},
         args: [
             '--no-sandbox',
             '--disable-setuid-sandbox',
             '--disable-dev-shm-usage',
             '--single-process'
         ],
-        //headless: false,
+        headless: true,
     });
 
     const page = await browser.newPage();
