@@ -1,5 +1,5 @@
 const cheerio = require('cheerio');
-const puppeteer = require('puppeteer-core');
+const puppeteer = require('puppeteer');
 
 const bodyParser = require('body-parser');
 
