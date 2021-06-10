@@ -51,6 +51,10 @@ app.get('/test', async function(req, res) {
 
     console.timeEnd('Login page');
 
+    await browser.close();
+
+    return res.send('hello');
+
 
     // home
     console.time('Home page');
