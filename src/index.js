@@ -19,7 +19,6 @@ app.get('/', (req, res) => {
 });
 
 app.get('/test', async function(req, res) {
-    let html;
     try {
         
     console.log('1');
@@ -62,15 +61,15 @@ app.get('/test', async function(req, res) {
 
     console.timeEnd('Login page');
 
-    html = await page.content();
+    let test = await page.content();
 
     await browser.close();
+
+    return res.send(test);
 
     } catch (err) {
         return res.send(err);
     }
-
-    return res.send(html);
 
 
     // home
