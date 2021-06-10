@@ -19,6 +19,10 @@ app.get('/', (req, res) => {
 });
 
 app.get('/test', async function(req, res) {
+    try {
+        
+    console.log('1');
+
     const browser = await puppeteer.launch({
         //executablePath: 'C:\\Program Files (x86)\\Google\\Chrome\\Application\\chrome.exe',
         //defaultViewport: {width: 1920, height: 1080},
@@ -31,9 +35,15 @@ app.get('/test', async function(req, res) {
         headless: true,
     });
 
+    console.log('2');
+
     const page = await browser.newPage();
 
+    console.log('3');
+
     await page.goto(url);
+
+    console.log('4');
 
     // ===== START ===== //
 
@@ -53,7 +63,11 @@ app.get('/test', async function(req, res) {
 
     await browser.close();
 
-    return res.send('hello');
+    } catch (err) {
+        console.log(err)
+    }
+
+    return res.send('working');
 
 
     // home
