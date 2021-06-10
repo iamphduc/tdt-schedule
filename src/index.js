@@ -61,7 +61,7 @@ app.get('/test', async function(req, res) {
 
     console.timeEnd('Login page');
 
-    let html = await page.content();
+    var html = await page.content();
 
     await browser.close();
 
