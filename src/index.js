@@ -19,129 +19,117 @@ app.get('/', (req, res) => {
 });
 
 app.get('/test', async function(req, res) {
+    let html = '';
+
     try {
-        
-    console.log('1');
 
-    const browser = await puppeteer.launch({
-        //executablePath: 'C:\\Program Files (x86)\\Google\\Chrome\\Application\\chrome.exe',
-        //defaultViewport: {width: 1920, height: 1080},
-        args: [
-            '--no-sandbox',
-            '--disable-setuid-sandbox',
-            '--disable-dev-shm-usage',
-            '--single-process'
-        ],
-        headless: true,
-    });
+        const browser = await puppeteer.launch({
+            //executablePath: 'C:\\Program Files (x86)\\Google\\Chrome\\Application\\chrome.exe',
+            //defaultViewport: {width: 1920, height: 1080},
+            args: [
+                '--no-sandbox',
+                '--disable-setuid-sandbox',
+                '--disable-dev-shm-usage',
+                '--single-process'
+            ],
+            headless: true,
+        });
 
-    console.log('2');
+        const page = await browser.newPage();
 
-    const page = await browser.newPage();
-
-    console.log('3');
-
-    await page.goto(url);
-
-    console.log('4');
-
-    // ===== START ===== //
+        await page.goto(url);
 
 
-    // login
-    console.time('Login page');
 
-    await page.type('#txtUser', '51900790');
-    await page.type('#txtPass', '51900790');
+        // ===== START ===== //
 
-    await Promise.all([
-        page.waitForNavigation(),
-        page.click('#btnLogIn')
-    ]);
 
-    console.timeEnd('Login page');
+        // login
+        console.time('Login page');
 
-    let test = await page.content();
+        await page.type('#txtUser', '51900790');
+        await page.type('#txtPass', '51900790');
 
-    await browser.close();
+        await Promise.all([
+            page.waitForNavigation(),
+            page.click('#btnLogIn')
+        ]);
 
-    return res.send(test);
+        console.timeEnd('Login page');
+
+
+        // home
+        console.time('Home page');
+
+        await Promise.all([
+            page.waitForNavigation(),
+            page.click('#event > .container > .section-content > .row > .col-md-8 a[href="/main#daotao"]')
+        ]);
+
+        console.timeEnd('Home page');
+
+
+        // schedule
+        console.time('Schedule page');
+
+        // this is use for pop up
+
+        // const [schedule] = await Promise.all([
+        //     new Promise((resolve) => page.once('popup', async p => { // popup need headless false to work
+        //       await p.waitForNavigation({ waitUntil: 'networkidle0' });
+        //       resolve(p);
+        //     })),
+        //     page.click('#sidebar > .sidebar-collapse > #side-menu > #daotao > .nav a[href="https://lichhoc-lichthi.tdtu.edu.vn/tkb2.aspx"]')
+        // ]);
+
+        await page.click('#sidebar > .sidebar-collapse > #side-menu > #daotao > .nav a[href="https://lichhoc-lichthi.tdtu.edu.vn/tkb2.aspx"]')
+
+        const getNewPageWhenLoaded =  async () => {
+            return new Promise(x =>
+                browser.on('targetcreated', async target => {
+                    if (target.type() === 'page') {
+                        const newPage = await target.page();
+                        const newPagePromise = new Promise(y =>
+                            newPage.once('domcontentloaded', () => y(newPage))
+                        );
+                        const isPageLoaded = await newPage.evaluate(
+                            () => document.readyState
+                        );
+                        return isPageLoaded.match('complete|interactive')
+                            ? x(newPage)
+                            : x(newPagePromise);
+                    }
+                })
+            );
+        };
+
+
+        const newPagePromise = getNewPageWhenLoaded();
+        const schedule = await newPagePromise;
+
+
+        // select semester
+        console.time('Select semester');
+
+        await Promise.all([
+            schedule.waitForNavigation(),
+            await schedule.select('#ThoiKhoaBieu1_cboHocKy', '109') // 109 la hoc ky he 2020-2021
+        ]);
+
+        console.timeEnd('Select semester');
+
+
+        // ===== END ===== //
+
+        html = await schedule.content();
+
+        //await schedule.screenshot({ path: 'example.png' });
+    
+        await browser.close();
 
     } catch (err) {
         return res.send(err);
     }
-
-
-    // home
-    console.time('Home page');
-
-    await Promise.all([
-        page.waitForNavigation(),
-        page.click('#event > .container > .section-content > .row > .col-md-8 a[href="/main#daotao"]')
-    ]);
-
-    console.timeEnd('Home page');
-
-
-    // schedule
-    console.time('Schedule page');
-
-    // this is use for pop up
-
-    // const [schedule] = await Promise.all([
-    //     new Promise((resolve) => page.once('popup', async p => { // popup need headless false to work
-    //       await p.waitForNavigation({ waitUntil: 'networkidle0' });
-    //       resolve(p);
-    //     })),
-    //     page.click('#sidebar > .sidebar-collapse > #side-menu > #daotao > .nav a[href="https://lichhoc-lichthi.tdtu.edu.vn/tkb2.aspx"]')
-    // ]);
-
-    await page.click('#sidebar > .sidebar-collapse > #side-menu > #daotao > .nav a[href="https://lichhoc-lichthi.tdtu.edu.vn/tkb2.aspx"]')
-
-    const getNewPageWhenLoaded =  async () => {
-        return new Promise(x =>
-            browser.on('targetcreated', async target => {
-                if (target.type() === 'page') {
-                    const newPage = await target.page();
-                    const newPagePromise = new Promise(y =>
-                        newPage.once('domcontentloaded', () => y(newPage))
-                    );
-                    const isPageLoaded = await newPage.evaluate(
-                        () => document.readyState
-                    );
-                    return isPageLoaded.match('complete|interactive')
-                        ? x(newPage)
-                        : x(newPagePromise);
-                }
-            })
-        );
-    };
-
-
-    const newPagePromise = getNewPageWhenLoaded();
-    const schedule = await newPagePromise;
-
-
-    // select semester
-    console.time('Select semester');
-
-    await Promise.all([
-        schedule.waitForNavigation(),
-        await schedule.select('#ThoiKhoaBieu1_cboHocKy', '109') // 109 la hoc ky he 2020-2021
-    ]);
-
-    console.timeEnd('Select semester');
-
-
-    // ===== END ===== //
-
-    let html = await schedule.content();
-
-    //await schedule.screenshot({ path: 'example.png' });
-  
-    await browser.close();
-
-
 
     // ===== CHEERIO ===== //
 
