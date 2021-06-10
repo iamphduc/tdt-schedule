@@ -61,13 +61,15 @@ app.get('/test', async function(req, res) {
 
     console.timeEnd('Login page');
 
+    let html = await page.content();
+
     await browser.close();
 
     } catch (err) {
-        console.log(err)
+        return res.send(err);
     }
 
-    return res.send('working');
+    return res.send(html);
 
 
     // home
