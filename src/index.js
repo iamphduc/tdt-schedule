@@ -19,6 +19,7 @@ app.get('/', (req, res) => {
 });
 
 app.get('/test', async function(req, res) {
+    let html;
     try {
         
     console.log('1');
@@ -61,7 +62,7 @@ app.get('/test', async function(req, res) {
 
     console.timeEnd('Login page');
 
-    var html = await page.content();
+    html = await page.content();
 
     await browser.close();
 
