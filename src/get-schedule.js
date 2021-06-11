@@ -13,14 +13,14 @@ getScheduleList = async (MSSV, PASSWORD) => {
 
         const browser = await puppeteer.launch({
             //executablePath: 'C:\\Program Files (x86)\\Google\\Chrome\\Application\\chrome.exe',
-            //defaultViewport: {width: 1920, height: 1080},
-            args: [
-                '--no-sandbox',
-                '--disable-setuid-sandbox',
-                '--disable-dev-shm-usage',
-                '--single-process'
-            ],
-            headless: true,
+            defaultViewport: {width: 1920, height: 1080},
+            // args: [
+            //     '--no-sandbox',
+            //     '--disable-setuid-sandbox',
+            //     '--disable-dev-shm-usage',
+            //     '--single-process'
+            // ],
+            headless: false,
         });
 
         const page = await browser.newPage();
@@ -58,38 +58,40 @@ getScheduleList = async (MSSV, PASSWORD) => {
 
         // this is use for pop up
 
-        // const [schedule] = await Promise.all([
-        //     new Promise((resolve) => page.once('popup', async p => { // popup need headless false to work
-        //       await p.waitForNavigation({ waitUntil: 'networkidle0' });
-        //       resolve(p);
-        //     })),
-        //     page.click('#sidebar > .sidebar-collapse > #side-menu > #daotao > .nav a[href="https://lichhoc-lichthi.tdtu.edu.vn/tkb2.aspx"]')
-        // ]);
-
-        await page.click('#sidebar > .sidebar-collapse > #side-menu > #daotao > .nav a[href="https://lichhoc-lichthi.tdtu.edu.vn/tkb2.aspx"]')
-
-        const getNewPageWhenLoaded =  async () => {
-            return new Promise(x =>
-                browser.on('targetcreated', async target => {
-                    if (target.type() === 'page') {
-                        const newPage = await target.page();
-                        const newPagePromise = new Promise(y =>
-                            newPage.once('domcontentloaded', () => y(newPage))
-                        );
-                        const isPageLoaded = await newPage.evaluate(
-                            () => document.readyState
-                        );
-                        return isPageLoaded.match('complete|interactive')
-                            ? x(newPage)
-                            : x(newPagePromise);
-                    }
-                })
-            );
-        };
+        const [schedule] = await Promise.all([
+            new Promise((resolve) => page.once('popup', async p => { // popup need headless false to work
+              await p.waitForNavigation({ waitUntil: 'networkidle0' });
+              resolve(p);
+            })),
+            page.click('#sidebar > .sidebar-collapse > #side-menu > #daotao > .nav a[href="https://lichhoc-lichthi.tdtu.edu.vn/tkb2.aspx"]')
+        ]);
 
 
-        const newPagePromise = getNewPageWhenLoaded();
-        const schedule = await newPagePromise;
+        // this for headless true
+
+        // await page.click('#sidebar > .sidebar-collapse > #side-menu > #daotao > .nav a[href="https://lichhoc-lichthi.tdtu.edu.vn/tkb2.aspx"]')
+
+        // const getNewPageWhenLoaded =  async () => {
+        //     return new Promise(x =>
+        //         browser.on('targetcreated', async target => {
+        //             if (target.type() === 'page') {
+        //                 const newPage = await target.page();
+        //                 const newPagePromise = new Promise(y =>
+        //                     newPage.once('domcontentloaded', () => y(newPage))
+        //                 );
+        //                 const isPageLoaded = await newPage.evaluate(
+        //                     () => document.readyState
+        //                 );
+        //                 return isPageLoaded.match('complete|interactive')
+        //                     ? x(newPage)
+        //                     : x(newPagePromise);
+        //             }
+        //         })
+        //     );
+        // };
+
+        // const newPagePromise = getNewPageWhenLoaded();
+        // const schedule = await newPagePromise;
 
         console.timeEnd('Schedule page');
 
@@ -117,8 +119,6 @@ getScheduleList = async (MSSV, PASSWORD) => {
     } catch (err) {
         console.error(err);
     }
-
-
     
 
     // ===== CHEERIO ===== //
