@@ -109,7 +109,6 @@ getScheduleList = async (MSSV, PASSWORD) => {
 
         // ===== END ===== //
 
-
         html = await schedule.content();
 
         //await schedule.screenshot({ path: 'example.png' });
