@@ -1,7 +1,7 @@
-# TON DUC THANG University Schedule Scraping
+# TDTU Scraping Practice
 
-Using puppeteer/puppeteer-core - cheerio - express.
+Use puppeteer(puppeteer-core) - cheerio - express to scrape schedule.
 
 ## Note
 
-Only work on new Student Portal.
+Running on new student portal.
