@@ -1,24 +1,20 @@
-
-const express = require('express');
+const express = require("express");
 const app = express();
 const port = process.env.PORT || 3000;
 
-const getSchedule = require('./get-schedule');
+const getSchedule = require("./get-schedule");
 
+app.get("/", async (req, res) => {
+  const MSSV = req.query.mssv;
+  const PASSWORD = req.query.pass;
 
-app.get('/', async function(req, res) {
-    const MSSV = req.query.mssv;
-    const PASSWORD = req.query.pass;
+  if (!MSSV || !PASSWORD) return res.sendStatus(404);
 
-    if (!MSSV || !PASSWORD) {
-        return res.send('<p style="font-size:24px;">?mssv=&pass=</p>');
-    }
+  const schedule = await getSchedule(MSSV, PASSWORD);
 
-    let schedule = await getSchedule(MSSV, PASSWORD);
-
-    res.send(schedule);
-})
+  res.json(schedule);
+});
 
 app.listen(port, () => {
-    console.log(`App: http://localhost:${port}`);
-})
+  console.log(`App: http://localhost:${port}`);
+});
