@@ -4,7 +4,7 @@ This project is to use Puppeteer to get schedule from TDTU Student Portal.
 ## Usage
 *Make sure your account running on new Student Portal (I didn't use old one).*
 
-Create a ```.env``` and fill in the corresponding values.
+Create a ```.env```
 ```
 MSSV=
 PASS=
