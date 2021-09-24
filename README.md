@@ -12,6 +12,8 @@ PASS=
 
 After running, data will be saved in ```/files```.
 
+![tdt-schedule-puppeteer.gif](https://user-images.githubusercontent.com/61509318/134711598-de9ff964-0e43-4279-a9c7-f56945a7148b.gif)
+
 ## Why did I do this project?
 Puppeteer is a powerful crawler tool which can run full (non-headless) Chromium and generate screenshots, so I want to give it a try.
 
