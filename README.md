@@ -12,7 +12,7 @@ PASS=
 
 After running, data will be saved in ```/files```.
 
-<img src="https://user-images.githubusercontent.com/61509318/134711598-de9ff964-0e43-4279-a9c7-f56945a7148b.gif" width=700/>
+<img src="https://user-images.githubusercontent.com/61509318/134711598-de9ff964-0e43-4279-a9c7-f56945a7148b.gif" width=600/>
 
 ## Why did I do this project?
 Puppeteer is a powerful crawler tool which can run full (non-headless) Chromium and generate screenshots, so I want to give it a try.
