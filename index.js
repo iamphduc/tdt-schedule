@@ -9,7 +9,7 @@ const URL = {
   SCHEDULE: "https://lichhoc-lichthi.tdtu.edu.vn/tkb2.aspx",
 };
 const PATH = {
-  SCREENSHOT: "./screenshots/puppeteer.png",
+  SCREENSHOT: "./files/puppeteer.png",
   FILE: "./files/puppeteer.json",
 };
 const VIEW = { WIDTH: 1900, HEIGHT: 1080 };
